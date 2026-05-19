@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sathish IPL – Live Cricket Scores 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --navy:#060e26;
+    --navy2:#0c1a3a;
+    --navy3:#112248;
+    --orange:#f7971e;
+    --orange2:#ffb347;
+    --gold:#ffd700;
+    --teal:#00d4aa;
+    --red:#ff4757;
+    --green:#2ed573;
+    --text:#e8eaf6;
+    --muted:#8fa0c4;
+    --border:rgba(255,255,255,0.08);
+    --card:rgba(255,255,255,0.04);
+    --card2:rgba(255,255,255,0.07);
+  }
+  body{
+    background:var(--navy);
+    color:var(--text);
+    font-family:'Nunito',sans-serif;
+    min-height:100vh;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(247,151,30,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 90% 80%, rgba(0,212,170,0.06) 0%, transparent 50%);
+  }
+
+  /* NAV */
+  nav{
+    background:rgba(6,14,38,0.95);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    padding:0 24px;
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Rajdhani',sans-serif;
+    font-size:26px;font-weight:700;
+    letter-spacing:1px;
+  }
+  .logo-icon{
+    width:40px;height:40px;
+    background:linear-gradient(135deg,var(--orange),var(--orange2));
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+  }
+  .logo span{color:var(--orange)}
+  .nav-links{display:flex;gap:4px}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;
+    padding:8px 14px;border-radius:8px;
+    font-size:14px;font-weight:600;
+    transition:all .2s;letter-spacing:.3px;
+  }
+  .nav-links a:hover,.nav-links a.active{
+    color:var(--orange);background:rgba(247,151,30,0.1)
+  }
+  .nav-right{display:flex;align-items:center;gap:12px}
+  .live-badge{
+    display:flex;align-items:center;gap:6px;
+    background:rgba(255,71,87,0.15);
+    border:1px solid rgba(255,71,87,0.3);
+    color:var(--red);padding:5px 12px;border-radius:20px;
+    font-size:12px;font-weight:700;letter-spacing:1px;
+  }
+  .live-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--red);
+    animation:pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+
+  /* MAIN */
+  .main{max-width:1100px;margin:0 auto;padding:28px 20px}
+
+  /* SECTION HEADER */
+  .sec-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .sec-title{
+    font-family:'Rajdhani',sans-serif;
+    font-size:18px;font-weight:700;
+    color:var(--orange);letter-spacing:.5px;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:8px;
+  }
+  .sec-title::before{
+    content:'';width:4px;height:18px;
+    background:var(--orange);border-radius:2px;
+  }
+  .view-all{
+    color:var(--muted);font-size:13px;font-weight:600;
+    text-decoration:none;transition:color .2s;
+  }
+  .view-all:hover{color:var(--orange)}
+
+  /* HERO MATCH CARD */
+  .hero-card{
+    background:var(--navy2);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px 28px;
+    margin-bottom:28px;
+    position:relative;overflow:hidden;
+  }
+  .hero-card::before{
+    content:'';position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,rgba(247,151,30,0.05) 0%,transparent 50%);
+    pointer-events:none;
+  }
+  .match-meta{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:20px;
+  }
+  .tournament-badge{
+    background:rgba(247,151,30,0.12);
+    border:1px solid rgba(247,151,30,0.25);
+    color:var(--orange2);
+    font-size:11px;font-weight:700;
+    padding:4px 10px;border-radius:6px;letter-spacing:.5px;
+  }
+  .match-no{color:var(--muted);font-size:13px;font-weight:600}
+  .venue-info{
+    margin-left:auto;
+    color:var(--muted);font-size:12px;font-weight:600;
+    display:flex;align-items:center;gap:4px;
+  }
+  .teams-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;gap:20px;
+    margin-bottom:20px;
+  }
+  .team-block{display:flex;flex-direction:column;gap:8px}
+  .team-block.right{align-items:flex-end;text-align:right}
+  .team-logo-name{
+    display:flex;align-items:center;gap:12px;
+  }
+  .team-block.right .team-logo-name{flex-direction:row-reverse}
+  .team-circle{
+    width:52px;height:52px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Rajdhani',sans-serif;
+    font-size:14px;font-weight:700;
+    border:2px solid;flex-shrink:0;
+  }
+  .team-name-full{
+    font-family:'Rajdhani',sans-serif;
+    font-size:20px;font-weight:700;letter-spacing:.3px;
+  }
+  .team-abbr{color:var(--muted);font-size:13px;font-weight:600}
+  .score-big{
+    font-family:'Rajdhani',sans-serif;
+    font-size:42px;font-weight:700;line-height:1;
+  }
+  .score-overs{color:var(--muted);font-size:13px;font-weight:600;margin-top:2px}
+  .vs-col{text-align:center}
+  .vs-text{
+    font-family:'Rajdhani',sans-serif;
+    font-size:22px;font-weight:700;color:var(--muted);
+  }
+  .result-bar{
+    background:rgba(46,213,115,0.1);
+    border:1px solid rgba(46,213,115,0.2);
+    border-radius:10px;
+    padding:10px 16px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;
+  }
+  .result-text{
+    color:var(--green);font-size:15px;font-weight:700;
+    font-family:'Rajdhani',sans-serif;letter-spacing:.3px;
+  }
+  .match-date{color:var(--muted);font-size:12px;font-weight:600}
+  .won-tag{
+    background:rgba(46,213,115,0.15);
+    border:1px solid rgba(46,213,115,0.3);
+    color:var(--green);
+    font-size:10px;font-weight:700;
+    padding:3px 8px;border-radius:4px;letter-spacing:.5px;
+  }
+
+  /* SCORECARD TABS */
+  .tabs{
+    display:flex;gap:4px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:20px;
+  }
+  .tab-btn{
+    background:none;border:none;
+    color:var(--muted);
+    font-family:'Nunito',sans-serif;
+    font-size:14px;font-weight:700;
+    padding:10px 18px;cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:all .2s;margin-bottom:-1px;
+    letter-spacing:.2px;
+  }
+  .tab-btn.active{color:var(--orange);border-bottom-color:var(--orange)}
+  .tab-btn:hover{color:var(--text)}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+
+  /* SCORECARD TABLE */
+  .innings-header{
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(247,151,30,0.07);
+    border-radius:10px;padding:10px 16px;margin-bottom:12px;
+  }
+  .innings-team{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700}
+  .innings-score{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--orange)}
+  .score-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}
+  .score-table th{
+    text-align:left;padding:8px 12px;
+    color:var(--muted);font-size:11px;font-weight:700;
+    letter-spacing:.5px;text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  .score-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .score-table tr:last-child td{border-bottom:none}
+  .score-table tr:hover td{background:rgba(255,255,255,0.03)}
+  .player-name{font-weight:700;color:var(--text)}
+  .dismiss-info{color:var(--muted);font-size:11px;font-weight:600}
+  .score-num{font-weight:700;text-align:right}
+  .score-table th:not(:first-child){text-align:right}
+  .score-table td:not(:first-child){text-align:right}
+  .highlight-row td{color:var(--gold)}
+  .highlight-row .player-name{color:var(--gold)}
+  .extra-row td{color:var(--muted);font-size:12px}
+  .fall-of-wickets{
+    color:var(--muted);font-size:12px;margin-bottom:16px;
+    line-height:1.7;
+  }
+  .fall-of-wickets span{color:var(--text);font-weight:600}
+  .bowling-section{margin-top:4px}
+
+  /* POINTS TABLE */
+  .points-table{width:100%;border-collapse:collapse;font-size:13px}
+  .points-table th{
+    text-align:left;padding:10px 14px;
+    color:var(--muted);font-size:11px;font-weight:700;
+    letter-spacing:.5px;text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,0.03);
+  }
+  .points-table td{
+    padding:11px 14px;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    font-weight:600;
+  }
+  .points-table th:not(:nth-child(2)){text-align:center}
+  .points-table td:not(:nth-child(2)){text-align:center}
+  .points-table tr:hover td{background:rgba(255,255,255,0.03)}
+  .rank-num{
+    font-family:'Rajdhani',sans-serif;font-weight:700;
+    font-size:16px;color:var(--muted);
+  }
+  .team-cell{display:flex;align-items:center;gap:10px}
+  .mini-circle{
+    width:32px;height:32px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;
+    border:2px solid;flex-shrink:0;
+  }
+  .team-full-name{font-weight:700;font-size:14px}
+  .q-badge{
+    display:inline-block;
+    width:8px;height:8px;border-radius:50%;
+    margin-left:4px;vertical-align:middle;
+  }
+  .pts-num{
+    font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--orange);
+  }
+  .nrr-pos{color:var(--green)}
+  .nrr-neg{color:var(--red)}
+  .playoff-row td:nth-child(2)::after{
+    content:'';display:block;
+    position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--teal);
+  }
+  .playoff-row{position:relative}
+  .playoff-divider td{
+    padding:0;height:2px;
+    background:linear-gradient(90deg,var(--teal),transparent);
+    border:none;
+  }
+
+  /* RECENT RESULTS */
+  .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+  @media(max-width:640px){.results-grid{grid-template-columns:1fr}}
+  .result-card{
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:14px;padding:16px 18px;
+    transition:border-color .2s;
+  }
+  .result-card:hover{border-color:rgba(247,151,30,0.25)}
+  .rc-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .rc-tournament{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.3px}
+  .rc-date{color:var(--muted);font-size:11px}
+  .rc-teams{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:8px;margin-bottom:8px;
+  }
+  .rc-team{display:flex;flex-direction:column;gap:2px}
+  .rc-abbr{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700}
+  .rc-score{font-size:13px;font-weight:700;color:var(--muted)}
+  .rc-vs{color:var(--muted);font-size:12px}
+  .rc-result{
+    font-size:12px;font-weight:700;
+    color:var(--green);
+    padding-top:8px;border-top:1px solid var(--border);
+  }
+
+  /* ORANGE NRR */
+  .nrr-highlight{color:var(--orange);font-weight:700}
+
+  /* FOOTER */
+  footer{
+    text-align:center;padding:28px;
+    color:var(--muted);font-size:13px;
+    border-top:1px solid var(--border);margin-top:40px;
+  }
+  footer strong{color:var(--orange)}
+
+  /* GRID LAYOUT */
+  .two-col{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media(max-width:900px){.two-col{grid-template-columns:1fr}}
+
+  /* CARD WRAPPER */
+  .card-box{
+    background:var(--navy2);
+    border:1px solid var(--border);
+    border-radius:16px;padding:22px;
+    margin-bottom:24px;
+  }
+
+  /* TOSS INFO */
+  .toss-strip{
+    display:flex;align-items:center;gap:8px;
+    color:var(--muted);font-size:12px;font-weight:600;
+    margin-bottom:12px;
+  }
+  .toss-strip span{color:var(--text)}
+
+  /* WEATHER */
+  .match-conditions{
+    display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;
+  }
+  .cond-chip{
+    background:rgba(255,255,255,0.05);
+    border-radius:8px;padding:6px 12px;
+    font-size:12px;font-weight:600;color:var(--muted);
+    display:flex;align-items:center;gap:6px;
+  }
+  .cond-chip span{color:var(--text)}
+
+  /* MOM */
+  .mom-card{
+    background:linear-gradient(135deg,rgba(247,151,30,0.12),rgba(255,215,0,0.06));
+    border:1px solid rgba(247,151,30,0.25);
+    border-radius:14px;padding:16px 18px;
+    display:flex;align-items:center;gap:14px;
+    margin-bottom:16px;
+  }
+  .mom-avatar{
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--orange),var(--orange2));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;
+    color:var(--navy);flex-shrink:0;
+  }
+  .mom-label{color:var(--orange2);font-size:11px;font-weight:700;letter-spacing:.5px}
+  .mom-name{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700}
+  .mom-stat{color:var(--muted);font-size:13px;font-weight:600}
+
+  /* TEAM COLORS */
+  .lsg{background:rgba(0,102,204,0.15);border-color:#0066cc;color:#4da6ff}
+  .csk{background:rgba(255,215,0,0.12);border-color:#ffd700;color:#ffd700}
+  .rcb{background:rgba(204,0,0,0.15);border-color:#cc0000;color:#ff6666}
+  .mi{background:rgba(0,68,136,0.15);border-color:#004488;color:#4488cc}
+  .kkr{background:rgba(102,0,153,0.15);border-color:#660099;color:#cc66ff}
+  .rr{background:rgba(255,0,102,0.15);border-color:#ff0066;color:#ff66aa}
+  .gt{background:rgba(0,102,153,0.15);border-color:#006699;color:#33aacc}
+  .pbks{background:rgba(170,0,0,0.15);border-color:#aa0000;color:#ff4444}
+  .srh{background:rgba(255,102,0,0.15);border-color:#ff6600;color:#ff9944}
+  .dc{background:rgba(0,68,136,0.15);border-color:#004488;color:#77aadd}
+
+  /* TOP PERFORMERS MINI GRID */
+  .perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .perf-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:10px;padding:12px 14px;
+  }
+  .perf-label{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:4px}
+  .perf-name{font-weight:700;font-size:13px;margin-bottom:2px}
+  .perf-stat{color:var(--orange);font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700}
+  .perf-team{color:var(--muted);font-size:11px;font-weight:600}
+
+  /* ANNOUNCEMENT BANNER */
+  .promo-banner{
+    background:linear-gradient(135deg,rgba(247,151,30,0.1),rgba(0,212,170,0.08));
+    border:1px solid rgba(247,151,30,0.2);
+    border-radius:14px;padding:16px 20px;
+    margin-bottom:24px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .promo-icon{font-size:28px}
+  .promo-text h3{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--orange);margin-bottom:2px}
+  .promo-text p{color:var(--muted);font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon">🏏</div>
+    <span>Sathish</span>&nbsp;IPL
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active">Scores</a>
+    <a href="#">Points Table</a>
+    <a href="#">Schedule</a>
+    <a href="#">Stats</a>
+    <a href="#">Teams</a>
+  </div>
+  <div class="nav-right">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- PROMO BANNER -->
+  <div class="promo-banner">
+    <div class="promo-icon">🏆</div>
+    <div class="promo-text">
+      <h3>IPL 2026 – 19th Edition</h3>
+      <p>74 league matches · Only 4 playoff spots remaining · Season ends May 31</p>
+    </div>
+  </div>
+
+  <!-- LATEST MATCH RESULT -->
+  <div style="margin-bottom:28px">
+    <div class="sec-header">
+      <div class="sec-title">Latest Match · Match 59</div>
+      <span class="match-date" style="color:var(--muted);font-size:13px;font-weight:600">Fri, 15 May 2026 · Ekana Cricket Stadium, Lucknow</span>
+    </div>
+
+    <div class="hero-card">
+      <div class="match-meta">
+        <span class="tournament-badge">TATA IPL 2026</span>
+        <span class="match-no">League Stage · Match 59</span>
+        <div class="venue-info">
+          📍 Ekana Cricket Stadium, Lucknow
+        </div>
+      </div>
+
+      <div class="toss-strip">
+        🪙 Toss: <span>LSG won the toss</span>&nbsp;and chose to&nbsp;<span>bowl first</span>
+        &nbsp;·&nbsp; ☀️ Clear, Hot conditions
+      </div>
+
+      <div class="teams-row">
+        <!-- CSK (batted first) -->
+        <div class="team-block">
+          <div class="team-logo-name">
+            <div class="team-circle csk">CSK</div>
+            <div>
+              <div class="team-name-full">Chennai Super Kings</div>
+              <div class="team-abbr">Batting 1st</div>
+            </div>
+          </div>
+          <div class="score-big" style="color:#ffd700">187<span style="font-size:24px;color:var(--muted)">/5</span></div>
+          <div class="score-overs">20 overs (completed)</div>
+        </div>
+
+        <!-- VS -->
+        <div class="vs-col">
+          <div class="vs-text">VS</div>
+        </div>
+
+        <!-- LSG (winner) -->
+        <div class="team-block right">
+          <div class="team-logo-name">
+            <div class="team-circle lsg">LSG</div>
+            <div style="text-align:right">
+              <div class="team-name-full">Lucknow Super Giants <span class="won-tag">WON</span></div>
+              <div class="team-abbr">Chased</div>
+            </div>
+          </div>
+          <div class="score-big" style="color:#4da6ff">188<span style="font-size:24px;color:var(--muted)">/3</span></div>
+          <div class="score-overs">16.4 overs (target: 188)</div>
+        </div>
+      </div>
+
+      <div class="result-bar">
+        <div class="result-text">🏆 Lucknow Super Giants won by 7 wickets</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="color:var(--muted);font-size:12px;font-weight:600">RR: 11.28 | CRR: 9.35</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOM -->
+    <div class="mom-card">
+      <div class="mom-avatar">MM</div>
+      <div>
+        <div class="mom-label">⭐ PLAYER OF THE MATCH</div>
+        <div class="mom-name">Mitchell Marsh</div>
+        <div class="mom-stat">90 runs off 38 balls (SR 236.84) · 9 fours, 7 sixes</div>
+        <div class="perf-team">LSG – Lucknow Super Giants</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="card-box">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('inn1',this)">CSK Innings (187/5)</button>
+        <button class="tab-btn" onclick="switchTab('inn2',this)">LSG Innings (188/3)</button>
+        <button class="tab-btn" onclick="switchTab('bowling',this)">Bowling Stats</button>
+      </div>
+
+      <!-- INNINGS 1: CSK -->
+      <div id="inn1" class="tab-content active">
+        <div class="innings-header">
+          <span class="innings-team">🟡 Chennai Super Kings — 1st Innings</span>
+          <span class="innings-score">187/5 (20.0 ov)</span>
+        </div>
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th>Batter</th>
+              <th>B</th><th>4s</th><th>6s</th><th>SR</th><th>R</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="player-name">Ruturaj Gaikwad</div><div class="dismiss-info">c Inglis b Akash Singh</div></td>
+              <td>9</td><td>2</td><td>0</td><td>144.4</td><td class="score-num">13</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Sanju Samson</div><div class="dismiss-info">c Marsh b Akash Singh</div></td>
+              <td>20</td><td>3</td><td>0</td><td>100.0</td><td class="score-num">20</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Urvil Patel</div><div class="dismiss-info">c Samad b Akash Singh</div></td>
+              <td>7</td><td>1</td><td>0</td><td>85.7</td><td class="score-num">6</td>
+            </tr>
+            <tr class="highlight-row">
+              <td><div class="player-name">Kartik Sharma</div><div class="dismiss-info">c Pooran b Shahbaz</div></td>
+              <td>42</td><td>6</td><td>5</td><td>169.0</td><td class="score-num">71</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Dewald Brevis</div><div class="dismiss-info">c Akash b Shami</div></td>
+              <td>16</td><td>0</td><td>2</td><td>156.3</td><td class="score-num">25</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Shivam Dube</div><div class="dismiss-info">not out</div></td>
+              <td>16</td><td>3</td><td>2</td><td>200.0</td><td class="score-num">32</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Prashant Veer</div><div class="dismiss-info">not out</div></td>
+              <td>10</td><td>1</td><td>0</td><td>130.0</td><td class="score-num">13</td>
+            </tr>
+            <tr class="extra-row">
+              <td colspan="6">Extras: 7 (wd 7, nb 0) &nbsp;|&nbsp; <strong>Total: 187/5 (20 ov) · RR 9.35</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="fall-of-wickets">
+          <strong>Fall of Wickets:</strong> <span>1-31</span> (Gaikwad, 3.5) · <span>2-36</span> (Samson, 5.3) · <span>3-52</span> (Patel, 7.2) · <span>4-122</span> (Brevis, 14.4) · <span>5-142</span> (Sharma, 15.6)
+        </div>
+      </div>
+
+      <!-- INNINGS 2: LSG -->
+      <div id="inn2" class="tab-content">
+        <div class="innings-header" style="background:rgba(77,166,255,0.07)">
+          <span class="innings-team">🔵 Lucknow Super Giants — 2nd Innings</span>
+          <span class="innings-score" style="color:#4da6ff">188/3 (16.4 ov)</span>
+        </div>
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th>Batter</th>
+              <th>B</th><th>4s</th><th>6s</th><th>SR</th><th>R</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td><div class="player-name">Mitchell Marsh</div><div class="dismiss-info">run out (Choudhary)</div></td>
+              <td>38</td><td>9</td><td>7</td><td>236.8</td><td class="score-num">90</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Josh Inglis</div><div class="dismiss-info">c Patel b Choudhary</div></td>
+              <td>32</td><td>3</td><td>1</td><td>112.5</td><td class="score-num">36</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Nicholas Pooran</div><div class="dismiss-info">not out</div></td>
+              <td>17</td><td>1</td><td>4</td><td>188.2</td><td class="score-num">32</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Abdul Samad</div><div class="dismiss-info">b Johnson</div></td>
+              <td>3</td><td>0</td><td>1</td><td>233.3</td><td class="score-num">7</td>
+            </tr>
+            <tr>
+              <td><div class="player-name">Mukul Choudhary</div><div class="dismiss-info">not out</div></td>
+              <td>10</td><td>2</td><td>0</td><td>130.0</td><td class="score-num">13</td>
+            </tr>
+            <tr class="extra-row">
+              <td colspan="6">Extras: 10 (wd 3, nb 0, b 1, lb 6) &nbsp;|&nbsp; <strong>Total: 188/3 (16.4 ov) · RR 11.28</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="fall-of-wickets">
+          <strong>Fall of Wickets:</strong> <span>1-135</span> (Inglis, 11.4) · <span>2-135</span> (Marsh, 11.5) · <span>3-144</span> (Samad, 13.2)
+        </div>
+      </div>
+
+      <!-- BOWLING -->
+      <div id="bowling" class="tab-content">
+        <div class="innings-header">
+          <span class="innings-team">🟢 LSG Bowling — vs CSK (1st Innings)</span>
+          <span class="innings-score">Conceded: 187/5</span>
+        </div>
+        <table class="score-table">
+          <thead>
+            <tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>NB</th><th>WD</th><th>Econ</th></tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td class="player-name">Akash Maharaj Singh</td>
+              <td>4</td><td>26</td><td><strong>3</strong></td><td>0</td><td>1</td><td>6.50</td>
+            </tr>
+            <tr>
+              <td class="player-name">Mohammed Shami</td>
+              <td>4</td><td>41</td><td>1</td><td>0</td><td>1</td><td>10.25</td>
+            </tr>
+            <tr>
+              <td class="player-name">Mayank Yadav</td>
+              <td>4</td><td>26</td><td>0</td><td>0</td><td>3</td><td>6.50</td>
+            </tr>
+            <tr>
+              <td class="player-name">Shahbaz Ahmed</td>
+              <td>4</td><td>45</td><td>1</td><td>0</td><td>0</td><td>11.25</td>
+            </tr>
+            <tr>
+              <td class="player-name">Prince Yadav</td>
+              <td>4</td><td>49</td><td>0</td><td>0</td><td>2</td><td>12.25</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="innings-header" style="background:rgba(77,166,255,0.07);margin-top:8px">
+          <span class="innings-team">🔵 CSK Bowling — vs LSG (2nd Innings)</span>
+          <span class="innings-score" style="color:#4da6ff">Conceded: 188/3</span>
+        </div>
+        <table class="score-table">
+          <thead>
+            <tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>NB</th><th>WD</th><th>Econ</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="player-name">Mukesh Choudhary</td>
+              <td>3</td><td>24</td><td>1</td><td>0</td><td>1</td><td>8.00</td>
+            </tr>
+            <tr>
+              <td class="player-name">Spencer Johnson</td>
+              <td>4</td><td>39</td><td>1</td><td>0</td><td>2</td><td>9.75</td>
+            </tr>
+            <tr>
+              <td class="player-name">Noor Ahmad</td>
+              <td>4</td><td>21</td><td>0</td><td>0</td><td>0</td><td>5.25</td>
+            </tr>
+            <tr>
+              <td class="player-name">Gurjapneet Singh</td>
+              <td>3</td><td>34</td><td>0</td><td>0</td><td>0</td><td>11.33</td>
+            </tr>
+            <tr class="highlight-row" style="color:var(--red)">
+              <td class="player-name">Anshul Kamboj</td>
+              <td>2.4</td><td>63</td><td>0</td><td>0</td><td>0</td><td>23.63</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TOP PERFORMERS -->
+    <div class="sec-header" style="margin-bottom:12px">
+      <div class="sec-title">Top Performers</div>
+    </div>
+    <div class="perf-grid" style="margin-bottom:28px">
+      <div class="perf-card">
+        <div class="perf-label">🏏 TOP BAT – LSG</div>
+        <div class="perf-name">Mitchell Marsh</div>
+        <div class="perf-stat">90 (38b)</div>
+        <div class="perf-team">9×4, 7×6 · SR 236.84</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">🏏 TOP BAT – CSK</div>
+        <div class="perf-name">Kartik Sharma</div>
+        <div class="perf-stat">71 (42b)</div>
+        <div class="perf-team">6×4, 5×6 · SR 169.05</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">🎯 BEST BOWL – LSG</div>
+        <div class="perf-name">Akash Maharaj Singh</div>
+        <div class="perf-stat">3/26 (4 ov)</div>
+        <div class="perf-team">Econ 6.50 · 11 dots</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">🎯 BEST BOWL – CSK</div>
+        <div class="perf-name">Noor Ahmad</div>
+        <div class="perf-stat">0/21 (4 ov)</div>
+        <div class="perf-team">Most economic · Econ 5.25</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWO COLUMN: POINTS TABLE + RECENT -->
+  <div class="two-col">
+    <!-- POINTS TABLE -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-title">Points Table 2026</div>
+        <span style="color:var(--muted);font-size:12px;font-weight:600">After Match 59 · Updated</span>
+      </div>
+      <div class="card-box" style="padding:0;overflow:hidden">
+        <table class="points-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th>M</th><th>W</th><th>L</th>
+              <th>PTS</th><th>NRR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="playoff-row">
+              <td class="rank-num">1</td>
+              <td><div class="team-cell"><div class="mini-circle rcb" style="font-size:9px">RCB</div><span class="team-full-name">Royal Challengers</span></div></td>
+              <td>12</td><td>9</td><td>3</td>
+              <td class="pts-num">18</td><td class="nrr-pos">+0.89</td>
+            </tr>
+            <tr class="playoff-row">
+              <td class="rank-num">2</td>
+              <td><div class="team-cell"><div class="mini-circle mi" style="font-size:9px">MI</div><span class="team-full-name">Mumbai Indians</span></div></td>
+              <td>11</td><td>7</td><td>4</td>
+              <td class="pts-num">14</td><td class="nrr-pos">+0.56</td>
+            </tr>
+            <tr class="playoff-row">
+              <td class="rank-num">3</td>
+              <td><div class="team-cell"><div class="mini-circle kkr" style="font-size:9px">KKR</div><span class="team-full-name">Kolkata Knight Riders</span></div></td>
+              <td>11</td><td>7</td><td>4</td>
+              <td class="pts-num">14</td><td class="nrr-pos">+0.34</td>
+            </tr>
+            <tr class="playoff-row">
+              <td class="rank-num">4</td>
+              <td><div class="team-cell"><div class="mini-circle lsg" style="font-size:9px">LSG</div><span class="team-full-name">Lucknow Super Giants</span></div></td>
+              <td>12</td><td>7</td><td>5</td>
+              <td class="pts-num">14</td><td class="nrr-pos">+0.12</td>
+            </tr>
+            <tr>
+              <td colspan="7" class="playoff-divider"></td>
+            </tr>
+            <tr>
+              <td class="rank-num">5</td>
+              <td><div class="team-cell"><div class="mini-circle rr" style="font-size:9px">RR</div><span class="team-full-name">Rajasthan Royals</span></div></td>
+              <td>11</td><td>6</td><td>5</td>
+              <td class="pts-num" style="color:var(--muted)">12</td><td class="nrr-pos">+0.08</td>
+            </tr>
+            <tr>
+              <td class="rank-num">6</td>
+              <td><div class="team-cell"><div class="mini-circle gt" style="font-size:9px">GT</div><span class="team-full-name">Gujarat Titans</span></div></td>
+              <td>11</td><td>6</td><td>5</td>
+              <td class="pts-num" style="color:var(--muted)">12</td><td class="nrr-neg">-0.05</td>
+            </tr>
+            <tr>
+              <td class="rank-num">7</td>
+              <td><div class="team-cell"><div class="mini-circle pbks" style="font-size:9px">PBKS</div><span class="team-full-name">Punjab Kings</span></div></td>
+              <td>12</td><td>5</td><td>7</td>
+              <td class="pts-num" style="color:var(--muted)">10</td><td class="nrr-pos">+0.15</td>
+            </tr>
+            <tr>
+              <td class="rank-num">8</td>
+              <td><div class="team-cell"><div class="mini-circle srh" style="font-size:9px">SRH</div><span class="team-full-name">Sunrisers Hyderabad</span></div></td>
+              <td>11</td><td>5</td><td>6</td>
+              <td class="pts-num" style="color:var(--muted)">10</td><td class="nrr-neg">-0.22</td>
+            </tr>
+            <tr>
+              <td class="rank-num">9</td>
+              <td><div class="team-cell"><div class="mini-circle dc" style="font-size:9px">DC</div><span class="team-full-name">Delhi Capitals</span></div></td>
+              <td>11</td><td>4</td><td>7</td>
+              <td class="pts-num" style="color:var(--muted)">8</td><td class="nrr-neg">-0.67</td>
+            </tr>
+            <tr>
+              <td class="rank-num">10</td>
+              <td><div class="team-cell"><div class="mini-circle csk" style="font-size:9px">CSK</div><span class="team-full-name">Chennai Super Kings</span></div></td>
+              <td>12</td><td>3</td><td>9</td>
+              <td class="pts-num" style="color:var(--muted)">6</td><td class="nrr-neg">-1.12</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:16px;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:12px;height:3px;background:var(--teal);border-radius:2px"></div>
+            <span style="color:var(--muted);font-size:11px;font-weight:600">Playoff Qualification Zone (Top 4)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT RESULTS SIDEBAR -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-title">Recent Results</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="result-card">
+          <div class="rc-top">
+            <span class="rc-tournament">IPL 2026 · M59</span>
+            <span class="rc-date">15 May</span>
+          </div>
+          <div class="rc-teams">
+            <div class="rc-team">
+              <span class="rc-abbr" style="color:#ffd700">CSK</span>
+              <span class="rc-score">187/5 (20)</span>
+            </div>
+            <span class="rc-vs">vs</span>
+            <div class="rc-team" style="align-items:flex-end;text-align:right">
+              <span class="rc-abbr" style="color:#4da6ff">LSG ✓</span>
+              <span class="rc-score">188/3 (16.4)</span>
+            </div>
+          </div>
+          <div class="rc-result">LSG won by 7 wickets</div>
+        </div>
+
+        <div class="result-card">
+          <div class="rc-top">
+            <span class="rc-tournament">IPL 2026 · M58</span>
+            <span class="rc-date">14 May</span>
+          </div>
+          <div class="rc-teams">
+            <div class="rc-team">
+              <span class="rc-abbr" style="color:#aa0000">PBKS ✓</span>
+              <span class="rc-score">178/5 (20)</span>
+            </div>
+            <span class="rc-vs">vs</span>
+            <div class="rc-team" style="align-items:flex-end;text-align:right">
+              <span class="rc-abbr" style="color:#004488">MI</span>
+              <span class="rc-score">171/9 (20)</span>
+            </div>
+          </div>
+          <div class="rc-result">PBKS won by 7 runs</div>
+        </div>
+
+        <div class="result-card">
+          <div class="rc-top">
+            <span class="rc-tournament">IPL 2026 · M57</span>
+            <span class="rc-date">13 May</span>
+          </div>
+          <div class="rc-teams">
+            <div class="rc-team">
+              <span class="rc-abbr" style="color:#cc0000">RCB ✓</span>
+              <span class="rc-score">201/4 (20)</span>
+            </div>
+            <span class="rc-vs">vs</span>
+            <div class="rc-team" style="align-items:flex-end;text-align:right">
+              <span class="rc-abbr" style="color:#006699">GT</span>
+              <span class="rc-score">184/7 (20)</span>
+            </div>
+          </div>
+          <div class="rc-result">RCB won by 17 runs</div>
+        </div>
+
+        <div class="result-card">
+          <div class="rc-top">
+            <span class="rc-tournament">IPL 2026 · M56</span>
+            <span class="rc-date">12 May</span>
+          </div>
+          <div class="rc-teams">
+            <div class="rc-team">
+              <span class="rc-abbr" style="color:#660099">KKR</span>
+              <span class="rc-score">162/8 (20)</span>
+            </div>
+            <span class="rc-vs">vs</span>
+            <div class="rc-team" style="align-items:flex-end;text-align:right">
+              <span class="rc-abbr" style="color:#ff0066">RR ✓</span>
+              <span class="rc-score">163/4 (18.2)</span>
+            </div>
+          </div>
+          <div class="rc-result">RR won by 6 wickets</div>
+        </div>
+
+        <!-- UPCOMING -->
+        <div style="margin-top:8px">
+          <div class="sec-title" style="margin-bottom:10px">Upcoming Matches</div>
+          <div class="result-card" style="border-color:rgba(0,212,170,0.2)">
+            <div class="rc-top">
+              <span class="rc-tournament">IPL 2026 · M60</span>
+              <span class="rc-date" style="color:var(--teal);font-weight:700">Tomorrow</span>
+            </div>
+            <div class="rc-teams">
+              <div class="rc-team">
+                <span class="rc-abbr" style="color:#660099">KKR</span>
+                <span class="rc-score" style="color:var(--muted)">—</span>
+              </div>
+              <span class="rc-vs" style="color:var(--teal)">vs</span>
+              <div class="rc-team" style="align-items:flex-end">
+                <span class="rc-abbr" style="color:#004488">DC</span>
+                <span class="rc-score" style="color:var(--muted)">—</span>
+              </div>
+            </div>
+            <div style="color:var(--teal);font-size:12px;font-weight:700;padding-top:8px;border-top:1px solid var(--border)">
+              📅 Sun, 17 May 2026 · 7:30 PM IST
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Made with ❤️ by <strong>Sathish IPL</strong> · Live cricket scores, scorecards & standings for IPL 2026</p>
+  <p style="margin-top:6px;font-size:11px">Data sourced from official cricket feed · Updated in real-time</p>
+</footer>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
